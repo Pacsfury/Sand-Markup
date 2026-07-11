@@ -68,7 +68,7 @@ You can use every HTML attribute on every node.
         /id=TITLE
         /class=main-header
     -H2: Why Sand?
-    -H4: Because Sand is
+    -H4: Because Sand is:
     -BOX: List
         -TXT: - Structured as HTML
         -TXT: - Readable as MD
@@ -82,7 +82,7 @@ You can use every HTML attribute on every node.
 <div><h1 id="TITLE" class="main-header">Sand, a Markup Language</h1>
 <hr>
 <h2>Why Sand?</h2>
-<h4>Because Sand is</h4>
+<h4>Because Sand is:</h4>
 <div id="List"><p>- Structured as HTML</p>
 <p>- Readable as MD</p>
 <p>- Easy to write as YAML</p>
