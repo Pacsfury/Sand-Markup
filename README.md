@@ -45,6 +45,10 @@ You can use every HTML attribute on every node.
   * ANV: Text
 * **BOX**: A container, like div
   * ANV: Id
+* **LINK**: An hiperlink to another website of file
+  * ANV: Link display name
+* **IMG**: An image from a link
+  * ANV: Image link
 
 
 ## Example
@@ -87,3 +91,4 @@ You can use every HTML attribute on every node.
 - Add BOX Node
 - Better Attribute Parsing
 - Possibility to use tabs as four spaces
+- Add LINK and IMG nodes

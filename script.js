@@ -32,7 +32,9 @@ const NodeTypes = Object.freeze({
     H5: ["-H5"],
     H6: ["-H6"],
     TXT: ["-TXT"],
-    BOX: ["-BOX"]
+    BOX: ["-BOX"],
+    LINK: ["-LINK"],
+    IMG: ["-IMG"]
 });
 
 class Node {
@@ -110,6 +112,12 @@ function transpile(code) {
         } else if (trimmedLine.startsWith("-BOX:")) {
             let value = trimmedLine.substring(trimmedLine.indexOf(":") + 1).trim();
             newNode = new Node(NodeTypes.BOX, value, indent);
+        } else if (trimmedLine.startsWith("-LINK:")) {
+            let value = trimmedLine.substring(trimmedLine.indexOf(":") + 1).trim();
+            newNode = new Node(NodeTypes.LINK, value, indent);
+        } else if (trimmedLine.startsWith("-IMG:")) {
+            let value = trimmedLine.substring(trimmedLine.indexOf(":") + 1).trim();
+            newNode = new Node(NodeTypes.IMG, value, indent);
         } else {
             continue;
         }
@@ -190,7 +198,18 @@ function generateHTML(base) {
         for (let child of base.children) {
             html += generateHTML(child);
         }
+    } else if (base.type === NodeTypes.LINK) {
+        html += `<a${NodeAtr}>${base.mainvalue}</a>\n`;
+        for (let child of base.children) {
+            html += generateHTML(child);
+        }
+    } else if (base.type === NodeTypes.IMG) {
+        html += `<img${NodeAtr} src=${base.mainvalue}>\n`;
+        for (let child of base.children) {
+            html += generateHTML(child);
+        }
     }
+
 
     return html;
 }
