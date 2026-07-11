@@ -75,3 +75,4 @@ Some nodes accpet a value after its name (`-H1: ANV`). Every node uses it as des
 - First Commit:
   - Nodes: H1-H6, TXT, CONTENT
   - Basic Transpilation and Documentation
+  - Attribute and Node basic Parsing
