@@ -34,7 +34,9 @@ const NodeTypes = Object.freeze({
     TXT: ["-TXT"],
     BOX: ["-BOX"],
     LINK: ["-LINK"],
-    IMG: ["-IMG"]
+    IMG: ["-IMG"],
+    CODE: ["-CODE"],
+    BTN: ["-BTN"]
 });
 
 class Node {
@@ -118,6 +120,12 @@ function transpile(code) {
         } else if (trimmedLine.startsWith("-IMG:")) {
             let value = trimmedLine.substring(trimmedLine.indexOf(":") + 1).trim();
             newNode = new Node(NodeTypes.IMG, value, indent);
+        } else if (trimmedLine.startsWith("-CODE:")) {
+            let value = trimmedLine.substring(trimmedLine.indexOf(":") + 1).trim();
+            newNode = new Node(NodeTypes.CODE, value, indent);
+        } else if (trimmedLine.startsWith("-BTN:")) {
+            let value = trimmedLine.substring(trimmedLine.indexOf(":") + 1).trim();
+            newNode = new Node(NodeTypes.BTN, value, indent);
         } else {
             continue;
         }
@@ -205,6 +213,16 @@ function generateHTML(base) {
         }
     } else if (base.type === NodeTypes.IMG) {
         html += `<img${NodeAtr} src=${base.mainvalue}>\n`;
+        for (let child of base.children) {
+            html += generateHTML(child);
+        }
+    } else if (base.type === NodeTypes.CODE) {
+        html += `<code ${NodeAtr}>${base.mainvalue}</code>\n`;
+        for (let child of base.children) {
+            html += generateHTML(child);
+        }
+    } else if (base.type === NodeTypes.BTN) {
+        html += `<button ${NodeAtr}>${base.mainvalue}</button>\n`;
         for (let child of base.children) {
             html += generateHTML(child);
         }

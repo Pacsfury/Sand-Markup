@@ -49,7 +49,10 @@ You can use every HTML attribute on every node.
   * ANV: Link display name
 * **IMG**: An image from a link
   * ANV: Image link
-
+* **CODE**: Code line
+  * ANV: Text
+* **BTN**: A clickable, HTML button
+  * ANV: Text
 
 ## Example
 
