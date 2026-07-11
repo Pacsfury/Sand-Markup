@@ -1,3 +1,19 @@
+document.getElementById("code").addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+        e.preventDefault();
+        
+        const start = this.selectionStart;
+        const end = this.selectionEnd;
+
+        this.value = this.value.substring(0, start) + "    " + this.value.substring(end);
+
+        this.selectionStart = this.selectionEnd = start + 4;
+
+        this.dispatchEvent(new Event('input'));
+    }
+});
+
+
 document.getElementById("code").addEventListener('input', () => {
     execute();
 });
@@ -15,7 +31,8 @@ const NodeTypes = Object.freeze({
     H4: ["-H4"],
     H5: ["-H5"],
     H6: ["-H6"],
-    TXT: ["-TXT"]
+    TXT: ["-TXT"],
+    BOX: ["-BOX"]
 });
 
 class Node {
@@ -52,11 +69,17 @@ function transpile(code) {
         let indent = calcindent(actline);
         let trimmedLine = actline.trim();
 
-        if (trimmedLine.startsWith("/id=")) {
-            if (currentNode && indent === currentNode.indent + 1) {
-                currentNode.attr["id"] = trimmedLine.split("/id=")[1].trim();
+        if (trimmedLine.startsWith("/")) {
+            let eqIndex = trimmedLine.indexOf("=");
+            if (eqIndex > 1) {
+                let attrName = trimmedLine.substring(1, eqIndex).trim();
+                let attrValue = trimmedLine.substring(eqIndex + 1).trim();
+                
+                if (currentNode && indent === currentNode.indent + 1) {
+                    currentNode.attr[attrName] = attrValue;
+                }
+                continue;
             }
-            continue; 
         }
 
         let newNode = null;
@@ -84,6 +107,9 @@ function transpile(code) {
         } else if (trimmedLine.startsWith("-TXT:")) {
             let value = trimmedLine.substring(trimmedLine.indexOf(":") + 1).trim();
             newNode = new Node(NodeTypes.TXT, value, indent);
+        } else if (trimmedLine.startsWith("-BOX:")) {
+            let value = trimmedLine.substring(trimmedLine.indexOf(":") + 1).trim();
+            newNode = new Node(NodeTypes.BOX, value, indent);
         } else {
             continue;
         }
@@ -107,11 +133,13 @@ function transpile(code) {
 function generateHTML(base) {
     let html = "";
     
-    let idAttr = base.attr["id"] ? ` id="${base.attr["id"]}"` : "";
+    let NodeAtr = Object.entries(base.attr)
+        .map(([key, val]) => ` ${key}="${val}"`)
+        .join("");
 
     if (base.type === NodeTypes.CONTENT) {
         if (base.mainvalue !== "Root") {
-            html += `<div${idAttr}>`;
+            html += `<div${NodeAtr}>`;
         }
         for (let child of base.children) {
             html += generateHTML(child);
@@ -119,38 +147,46 @@ function generateHTML(base) {
         if (base.mainvalue !== "Root") {
             html += "</div>\n";
         }
+    } else if (base.type === NodeTypes.BOX) {
+        html += `<div id="${base.mainvalue}"${NodeAtr}>`;
+
+        for (let child of base.children) {
+            html += generateHTML(child);
+        }
+
+        html += "</div>\n";
     } else if (base.type === NodeTypes.H1) {
-        html += `<h1${idAttr}>${base.mainvalue}</h1>\n`;
+        html += `<h1${NodeAtr}>${base.mainvalue}</h1>\n`;
         for (let child of base.children) {
             html += generateHTML(child);
         }
     } else if (base.type === NodeTypes.H2) {
-        html += `<h2${idAttr}>${base.mainvalue}</h2>\n`;
+        html += `<h2${NodeAtr}>${base.mainvalue}</h2>\n`;
         for (let child of base.children) {
             html += generateHTML(child);
         }
     } else if (base.type === NodeTypes.H3) {
-        html += `<h3${idAttr}>${base.mainvalue}</h3>\n`;
+        html += `<h3${NodeAtr}>${base.mainvalue}</h3>\n`;
         for (let child of base.children) {
             html += generateHTML(child);
         }
     } else if (base.type === NodeTypes.H4) {
-        html += `<h4${idAttr}>${base.mainvalue}</h4>\n`;
+        html += `<h4${NodeAtr}>${base.mainvalue}</h4>\n`;
         for (let child of base.children) {
             html += generateHTML(child);
         }
     } else if (base.type === NodeTypes.H5) {
-        html += `<h5${idAttr}>${base.mainvalue}</h5>\n`;
+        html += `<h5${NodeAtr}>${base.mainvalue}</h5>\n`;
         for (let child of base.children) {
             html += generateHTML(child);
         }
     } else if (base.type === NodeTypes.H6) {
-        html += `<h6${idAttr}>${base.mainvalue}</h6>\n`;
+        html += `<h6${NodeAtr}>${base.mainvalue}</h6>\n`;
         for (let child of base.children) {
             html += generateHTML(child);
         }
     } else if (base.type === NodeTypes.TXT) {
-        html += `<p${idAttr}>${base.mainvalue}</p>\n`;
+        html += `<p${NodeAtr}>${base.mainvalue}</p>\n`;
         for (let child of base.children) {
             html += generateHTML(child);
         }

@@ -15,7 +15,9 @@ Sand's logic is simple. Every line, can start with **three** characters, every o
 | /         | Attribute|
 | .         | Literal  |
 
-Nodes can be nested using indentation. A nested attribute will be used when creating the HTML element. Attributes are defines in `/key=value`. Literals will be added soon, and will be useful specially for lists, but every node handles attributes and literals it's own way.
+Nodes can be nested using indentation (four spaces, tab automatically translates to it). A nested attribute will be used when creating the HTML element. Attributes are defines in `/key=value`. 
+
+Literals will be added soon, and will be useful specially for lists, but every node handles attributes and literals it's own way.
 
 For literal blocks, In the future this will be available:
 ```
@@ -31,16 +33,18 @@ For literal blocks, In the future this will be available:
 
 Some nodes accpet a value after its name (`-H1: ANV`). Every node uses it as described in the next chapter.
 
-## Available Nodes and attributes
+You can use every HTML attribute on every node.
+
+## Available Nodes
 
 * **CONTENT**: Main container for your code
-  * Id
+  * ANV: None
 * **H1-H6**: Headers
-  * Id
   * ANV: Text
 * **TXT**: Paragraph
-  * Id
   * ANV: Text
+* **BOX**: A container, like div
+  * ANV: Id
 
 
 ## Example
@@ -51,23 +55,27 @@ Some nodes accpet a value after its name (`-H1: ANV`). Every node uses it as des
 -CONTENT:
     -H1: Sand, a Markup Language
         /id=TITLE
+        /class=main-header
     -H2: Why Sand?
     -H4: Because Sand is
-    -TXT: - Structured as HTML
-    -TXT: - Readable as MD
-    -TXT: - Easy to write as YAML
+    -BOX: List
+        -TXT: - Structured as HTML
+        -TXT: - Readable as MD
+        -TXT: - Easy to write as YAML
     -H3: IMPORTANT: Sand has just been started being developed!
+        /class=important
 ```
 
 ### Result:
 
-<div><h1 id="TITLE">Sand, a Markup Language</h1>
+<div><h1 id="TITLE" class="main-header">Sand, a Markup Language</h1>
 <h2>Why Sand?</h2>
 <h4>Because Sand is</h4>
-<p>- Structured as HTML</p>
+<div id="List"><p>- Structured as HTML</p>
 <p>- Readable as MD</p>
 <p>- Easy to write as YAML</p>
-<h3>IMPORTANT: Sand has just been started being developed!</h3>
+</div>
+<h3 class="important">IMPORTANT: Sand has just been started being developed!</h3>
 </div>
 
 ## Changelog
@@ -76,3 +84,6 @@ Some nodes accpet a value after its name (`-H1: ANV`). Every node uses it as des
   - Nodes: H1-H6, TXT, CONTENT
   - Basic Transpilation and Documentation
   - Attribute and Node basic Parsing
+- Add BOX Node
+- Better Attribute Parsing
+- Possibility to use tabs as four spaces
