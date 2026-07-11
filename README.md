@@ -1,3 +1,5 @@
+<img src="img/logo.png">
+
 # Sand, A Markup Language
 <sub>Prealpha 0.0.1</sub>
 
