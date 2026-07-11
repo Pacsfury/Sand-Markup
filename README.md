@@ -69,3 +69,9 @@ Some nodes accpet a value after its name (`-H1: ANV`). Every node uses it as des
 <p>- Easy to write as YAML</p>
 <h3>IMPORTANT: Sand has just been started being developed!</h3>
 </div>
+
+## Changelog
+**2026-7-11**:
+- First Commit:
+  - Nodes: H1-H6, TXT, CONTENT
+  - Basic Transpilation and Documentation
