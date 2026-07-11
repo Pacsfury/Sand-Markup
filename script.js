@@ -36,7 +36,8 @@ const NodeTypes = Object.freeze({
     LINK: ["-LINK"],
     IMG: ["-IMG"],
     CODE: ["-CODE"],
-    BTN: ["-BTN"]
+    BTN: ["-BTN"],
+    LINE: ["-LINE"]
 });
 
 class Node {
@@ -126,6 +127,9 @@ function transpile(code) {
         } else if (trimmedLine.startsWith("-BTN:")) {
             let value = trimmedLine.substring(trimmedLine.indexOf(":") + 1).trim();
             newNode = new Node(NodeTypes.BTN, value, indent);
+        } else if (trimmedLine.startsWith("-LINE:")) {
+            let value = trimmedLine.substring(trimmedLine.indexOf(":") + 1).trim();
+            newNode = new Node(NodeTypes.LINE, value, indent);
         } else {
             continue;
         }
@@ -217,12 +221,17 @@ function generateHTML(base) {
             html += generateHTML(child);
         }
     } else if (base.type === NodeTypes.CODE) {
-        html += `<code ${NodeAtr}>${base.mainvalue}</code>\n`;
+        html += `<code${NodeAtr}>${base.mainvalue}</code>\n`;
         for (let child of base.children) {
             html += generateHTML(child);
         }
     } else if (base.type === NodeTypes.BTN) {
-        html += `<button ${NodeAtr}>${base.mainvalue}</button>\n`;
+        html += `<button${NodeAtr}>${base.mainvalue}</button>\n`;
+        for (let child of base.children) {
+            html += generateHTML(child);
+        }
+    } else if (base.type === NodeTypes.LINE) {
+        html += `<hr${NodeAtr}>\n`;
         for (let child of base.children) {
             html += generateHTML(child);
         }

@@ -53,6 +53,8 @@ You can use every HTML attribute on every node.
   * ANV: Text
 * **BTN**: A clickable, HTML button
   * ANV: Text
+* **LINE**: Line.
+  * ANV: None
 
 ## Example
 
@@ -76,6 +78,7 @@ You can use every HTML attribute on every node.
 ### Result:
 
 <div><h1 id="TITLE" class="main-header">Sand, a Markup Language</h1>
+<hr>
 <h2>Why Sand?</h2>
 <h4>Because Sand is</h4>
 <div id="List"><p>- Structured as HTML</p>
