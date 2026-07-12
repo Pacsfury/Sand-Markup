@@ -19,7 +19,7 @@ Sand's logic is simple. Every line, can start with **three** characters, every o
 
 Nodes can be nested using indentation (four spaces, tab automatically translates to it). A nested attribute will be used when creating the HTML element. Attributes are defines in `/key=value`. 
 
-Literals will be added soon, and will be useful specially for lists, but every node handles attributes and literals it's own way.
+Literals are a string of text. Every node handles literals ignoring them or using them in a specific way, like LIST node.
 
 For literal blocks, In the future this will be available:
 ```
@@ -33,7 +33,7 @@ For literal blocks, In the future this will be available:
 
 ### After name value
 
-Some nodes accpet a value after its name (`-H1: ANV`). Every node uses it as described in the next chapter.
+Some nodes accept a value after its name (`-H1: ANV`). Every node uses it as described in the next chapter.
 
 You can use every HTML attribute on every node.
 
@@ -47,7 +47,7 @@ You can use every HTML attribute on every node.
   * ANV: Text
 * **BOX**: A container, like div
   * ANV: Id
-* **LINK**: An hiperlink to another website of file
+* **LINK**: An hyperlink to another website or file
   * ANV: Link display name
 * **IMG**: An image from a link
   * ANV: Image link
@@ -57,6 +57,8 @@ You can use every HTML attribute on every node.
   * ANV: Text
 * **LINE**: Line.
   * ANV: None
+* **LIST**: A list of literals
+  * ANV: Type (bullet/number). You can also define it using `/type={bullet,number}`
 
 ## Example
 
@@ -70,9 +72,10 @@ You can use every HTML attribute on every node.
     -H2: Why Sand?
     -H4: Because Sand is:
     -BOX: List
-        -TXT: - Structured as HTML
-        -TXT: - Readable as MD
-        -TXT: - Easy to write as YAML
+        -LIST: bullet
+            .Structured as HTML
+            .Readable as MD
+            .Easy to write as YAML
     -H3: IMPORTANT: Sand has just been started being developed!
         /class=important
 ```
@@ -80,18 +83,16 @@ You can use every HTML attribute on every node.
 ### Result:
 
 <div><h1 id="TITLE" class="main-header">Sand, a Markup Language</h1>
-<hr>
 <h2>Why Sand?</h2>
 <h4>Because Sand is:</h4>
-<div id="List"><p>- Structured as HTML</p>
-<p>- Readable as MD</p>
-<p>- Easy to write as YAML</p>
+<div id="List"><ul>
+<li>Structured as HTML</li><li>Readable as MD</li><li>Easy to write as YAML</li></ul>
 </div>
 <h3 class="important">IMPORTANT: Sand has just been started being developed!</h3>
 </div>
 
 ## Changelog
-**2026-7-11**:
+**2026-07-11**:
 - First Commit:
   - Nodes: H1-H6, TXT, CONTENT
   - Basic Transpilation and Documentation
@@ -100,3 +101,8 @@ You can use every HTML attribute on every node.
 - Better Attribute Parsing
 - Possibility to use tabs as four spaces
 - Add LINK and IMG nodes
+
+**2026-07-12**:
+- Added LIST node
+- Added literal support
+- Fixed typos at README

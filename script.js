@@ -37,7 +37,8 @@ const NodeTypes = Object.freeze({
     IMG: ["-IMG"],
     CODE: ["-CODE"],
     BTN: ["-BTN"],
-    LINE: ["-LINE"]
+    LINE: ["-LINE"],
+    LIST: ["-LIST"]
 });
 
 class Node {
@@ -45,6 +46,7 @@ class Node {
         this.type = type;
         this.mainvalue = mainvalue;
         this.children = [];
+        this.literals = [];
         this.indent = indent;
         this.attr = {};
     }
@@ -130,6 +132,15 @@ function transpile(code) {
         } else if (trimmedLine.startsWith("-LINE:")) {
             let value = trimmedLine.substring(trimmedLine.indexOf(":") + 1).trim();
             newNode = new Node(NodeTypes.LINE, value, indent);
+        } else if (trimmedLine.startsWith("-LIST:")) {
+            let value = trimmedLine.substring(trimmedLine.indexOf(":") + 1).trim();
+            newNode = new Node(NodeTypes.LIST, value, indent);
+
+        } else if (trimmedLine.startsWith(".")) {
+            let newLit = trimmedLine.substring(trimmedLine.indexOf(".") + 1).trim();
+            let parentNode = nodeHistory[nodeHistory.length - 1];
+            parentNode.literals.push(newLit);
+            newNode = null;
         } else {
             continue;
         }
@@ -235,6 +246,20 @@ function generateHTML(base) {
         for (let child of base.children) {
             html += generateHTML(child);
         }
+    } else if (base.type === NodeTypes.LIST) {
+        if (base.attr.type === "bullet" || base.mainvalue === "bullet") {
+            html += `<ul${NodeAtr.replace('type="bullet"', "")}>\n`;
+            for (let lit of base.literals) {
+                html += `<li>${lit}</li>` ;
+            }
+            html += `</ul>\n`;
+        } else if (base.attr.type === "number" || base.mainvalue === "number") {
+            html += `<ol${NodeAtr.replace('type="number"', "")}>\n`;
+            for (let lit of base.literals) {
+                html += `<li>${lit}</li>` ;
+            }
+            html += `</ol>\n`;
+        } 
     }
 
 
