@@ -17,7 +17,7 @@ Sand's logic is simple. Every line, can start with **three** characters, every o
 | /         | Attribute|
 | .         | Literal  |
 
-Nodes can be nested using indentation (four spaces, tab automatically translates to it). A nested attribute will be used when creating the HTML element. Attributes are defines in `/key=value`. 
+Nodes can be nested using indentation (four spaces, tab automatically translates to it). A nested attribute will be used when creating the HTML element. Attributes are defined in the format `/key=value`. 
 
 Literals are a string of text. Every node handles literals ignoring them or using them in a specific way, like LIST node.
 
