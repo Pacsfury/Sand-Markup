@@ -82,6 +82,8 @@ You can use every HTML attribute on every node.
 
 ### Result:
 
+---
+
 <div><h1 id="TITLE" class="main-header">Sand, a Markup Language</h1>
 <h2>Why Sand?</h2>
 <h4>Because Sand is:</h4>
@@ -90,6 +92,8 @@ You can use every HTML attribute on every node.
 </div>
 <h3 class="important">IMPORTANT: Sand has just been started being developed!</h3>
 </div>
+
+---
 
 ## Changelog
 **2026-07-11**:
